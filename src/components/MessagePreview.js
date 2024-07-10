@@ -24,9 +24,13 @@ const MessagePreview = ({ chat }) => {
           </div>
         </div>
         <div className="flex flex-col justify-between items-end text-xs h-full">
-          <p className="text-xs p-1 px-2 bg-green-200 rounded-full flex justify-center items-center w-5 h-5">
-            {chat?.unread}
-          </p>
+          {chat?.unread !== 0 ? (
+            <p className="text-xs p-1 px-2 bg-green-200 rounded-full flex justify-center items-center w-5 h-5">
+              {chat?.unread}
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <hr></hr>

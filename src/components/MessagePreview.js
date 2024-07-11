@@ -1,4 +1,4 @@
-const MessagePreview = ({ chat }) => {
+const MessagePreview = ({ chat, selectedChatId }) => {
   console.log("chat", chat);
   return (
     <>
@@ -27,15 +27,17 @@ const MessagePreview = ({ chat }) => {
             <p className="text-xs">{chat?.last_message?.created_at}</p>
           </div>
         </div>
-        <div className="flex flex-col justify-between items-end text-xs h-full">
-          {chat?.unread !== 0 ? (
-            <p className="text-xs p-1 px-2 bg-green-200 rounded-full flex justify-center items-center w-5 h-5">
-              {chat?.unread}
-            </p>
-          ) : (
-            ""
-          )}
-        </div>
+        {selectedChatId !== chat?.chat_id && (
+          <div className="flex flex-col justify-between items-end text-xs h-full">
+            {chat?.unread !== 0 ? (
+              <p className="text-xs p-1 px-2 bg-green-200 rounded-full flex justify-center items-center w-5 h-5">
+                {chat?.unread}
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
+        )}
       </div>
       <hr></hr>
     </>

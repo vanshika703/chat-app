@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getMessages, sendMessage, getUserViaChatId } from "../utils/api";
+import {
+  getMessages,
+  sendMessage,
+  getUserViaChatId,
+  markChatAsUnRead,
+  getChats,
+} from "../utils/api";
 
-const ChatWindow = ({ selectedChatId }) => {
+const ChatWindow = ({ selectedChatId, setChats, fetchAllChats, chats }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
@@ -40,6 +46,15 @@ const ChatWindow = ({ selectedChatId }) => {
     if (newMessage.trim() !== "") {
       const message = await sendMessage(selectedChatId, newMessage, "sent");
       setMessages((prev) => [...prev, message]);
+      const newChats = chats.reduce((acc, chat) => {
+        if (chat.chat_id === selectedChatId) {
+          const updatedChat = { ...chat, last_message: message };
+          return [updatedChat, ...acc];
+        } else {
+          return [...acc, chat];
+        }
+      }, []);
+      setChats(newChats);
       setNewMessage("");
       scrollToBottom();
     }
@@ -61,16 +76,30 @@ const ChatWindow = ({ selectedChatId }) => {
       c = c + 1;
       const randomMessage =
         messagesArray[Math.floor(Math.random() * messagesArray.length)];
+
       const message = await sendMessage(
         selectedChatId,
         randomMessage,
         "received"
       );
+
       setMessages((prev) => [...prev, message]);
+      markChatAsUnRead(selectedChatId);
       setNewMessage("");
+      // fetchAllChats();
+      const newChats = chats.reduce((acc, chat) => {
+        if (chat.chat_id === selectedChatId) {
+          const updatedChat = { ...chat, last_message: message };
+          return [updatedChat, ...acc];
+        } else {
+          return [...acc, chat];
+        }
+      }, []);
+      console.log("newChat", newChats, chats);
+      setChats(newChats);
       scrollToBottom();
-      if (c >= 4) clearInterval(interval);
-    }, 5000);
+      if (c >= 2) clearInterval(interval);
+    }, 10000);
   };
 
   return (

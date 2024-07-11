@@ -13,7 +13,7 @@ const chats = [
     },
     last_message: {
       id: "kjfds;kljf;kjsadklfn",
-      content: "Awesome, texted you there. Thanks",
+      content: "Doing great! Any plans for today?",
       created_at: "29/05 04:14",
       status: "DELIVERED",
     },
@@ -33,7 +33,7 @@ const chats = [
     },
     last_message: {
       id: "dfgdfgdfgdfgdfgdfg",
-      content: "Let's catch up tomorrow.",
+      content: "Great, thanks!",
       created_at: "28/05 08:20",
       status: "DELIVERED",
     },
@@ -53,7 +53,7 @@ const chats = [
     },
     last_message: {
       id: "wertwertwertwert",
-      content: "Meeting scheduled for next week.",
+      content: "Perfect, see you soon.",
       created_at: "27/05 12:15",
       status: "DELIVERED",
     },
@@ -73,7 +73,7 @@ const chats = [
     },
     last_message: {
       id: "zxcvzxvczxvczxvc",
-      content: "Sure, will be there.",
+      content: "Here it is, thanks!",
       created_at: "26/05 14:10",
       status: "DELIVERED",
     },
@@ -510,11 +510,23 @@ export const sendMessage = async (chatId, message, type) => {
   };
   if (!messages[chatId]) messages[chatId] = [];
   messages[chatId].push(newMessage);
+  chats.forEach((chat, i) => {
+    if (chat.chat_id === chatId) {
+      chat.last_message.content = message;
+    }
+  });
   return newMessage;
 };
 
 export const markChatAsRead = async (chatId) => {
   const chat = chats.find((chat) => chat.chat_id === chatId);
   if (chat) chat.unread = 0;
+  return chat;
+};
+
+export const markChatAsUnRead = async (chatId) => {
+  const chat = chats.find((chat) => chat.chat_id === chatId);
+  if (chat) chat.unread = chat.unread + 1;
+  console.log("chat unread: " + chat.unread);
   return chat;
 };

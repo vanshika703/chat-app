@@ -3,27 +3,17 @@ import MessagePreview from "./MessagePreview";
 import { TabView, TabPanel } from "primereact/tabview";
 import { getChats, markChatAsRead } from "../utils/api";
 
-export default function MessagesSidebar({ setSelectedChatId, selectedChatId }) {
-  const [chats, setChats] = useState([]);
-
-  useEffect(() => {
-    fetchAllChats();
-  }, []);
-
-  const fetchAllChats = async () => {
-    try {
-      const data = await getChats();
-      setChats(data?.chats);
-      console.log("data", data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+export default function MessagesSidebar({
+  chats,
+  setChats,
+  setSelectedChatId,
+  selectedChatId,
+  fetchAllChats,
+}) {
   const handleChatClick = async (chat) => {
     await markChatAsRead(chat.chat_id);
     setSelectedChatId(chat.chat_id);
-    fetchAllChats(); // Refresh chats to update unread count
+    fetchAllChats();
   };
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -58,7 +48,7 @@ export default function MessagesSidebar({ setSelectedChatId, selectedChatId }) {
                 selectedChatId === chat?.chat_id ? "bg-gray-100 " : ""
               }`}
             >
-              <MessagePreview chat={chat} />
+              <MessagePreview chat={chat} selectedChatId={selectedChatId}/>
             </div>
           ))}
         </TabPanel>
@@ -73,7 +63,7 @@ export default function MessagesSidebar({ setSelectedChatId, selectedChatId }) {
                   selectedChatId === chat?.chat_id ? "bg-gray-100 " : ""
                 }`}
               >
-                <MessagePreview chat={chat} />
+                <MessagePreview chat={chat}  selectedChatId={selectedChatId}/>
               </div>
             ))}
         </TabPanel>

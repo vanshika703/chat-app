@@ -13,11 +13,13 @@ function App() {
 
   return (
     <div className="App flex gap-2">
-      <MessagesSidebar onChatClick={(chatId) => setSelectedChatId(chatId)} />
-      <ChatWindow chatId={selectedChatId} />
+      <MessagesSidebar
+        setSelectedChatId={setSelectedChatId}
+        selectedChatId={selectedChatId}
+      />
+      <ChatWindow selectedChatId={selectedChatId} />
     </div>
   );
 }
 
 export default App;
-

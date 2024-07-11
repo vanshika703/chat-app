@@ -1,22 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getMessages, sendMessage } from "../utils/api";
+import { getMessages, sendMessage, getUserViaChatId } from "../utils/api";
 
-const ChatWindow = ({ chatId }) => {
+const ChatWindow = ({ selectedChatId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
+  const [userDetails, setUserDetails] = useState(null);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    if (chatId) {
-      fetchMessages(chatId, 0);
+    if (selectedChatId) {
+      fetchMessages(selectedChatId, 0);
+      handleReceiveMessage();
+
+      const user = getUserViaChatId(selectedChatId);
+      setUserDetails(user);
+      console.log("Received user", user);
     }
-  }, [chatId]);
+  }, [selectedChatId]);
 
   const fetchMessages = async (chatId, page) => {
     const data = await getMessages(chatId, page);
@@ -28,26 +35,65 @@ const ChatWindow = ({ chatId }) => {
     if (page === 0) scrollToBottom();
   };
 
+  //SEND MESSAGE EVENT THROUGH MOCK SENDING API
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "") {
-      const message = await sendMessage(chatId, newMessage);
+      const message = await sendMessage(selectedChatId, newMessage, "sent");
       setMessages((prev) => [...prev, message]);
       setNewMessage("");
       scrollToBottom();
     }
   };
 
+  const messagesArray = [
+    "Hello",
+    "How are you?",
+    "What's up?",
+    "Good morning",
+    "Good night",
+  ];
+
+  // RECEIVE MESSAGE EVENT THROUGH MOCK API POLING
+  const handleReceiveMessage = async () => {
+    let c = 0;
+
+    const interval = setInterval(async () => {
+      c = c + 1;
+      const randomMessage =
+        messagesArray[Math.floor(Math.random() * messagesArray.length)];
+      const message = await sendMessage(
+        selectedChatId,
+        randomMessage,
+        "received"
+      );
+      setMessages((prev) => [...prev, message]);
+      setNewMessage("");
+      scrollToBottom();
+      if (c >= 4) clearInterval(interval);
+    }, 5000);
+  };
+
   return (
     <div className="w-2/3 h-[100vh] bg-gray-100">
       <div className="flex justify-between items-center px-5 h-[10vh]">
-        <div className="flex justify-start items-center gap-4">
-          <img
-            src="https://www.psychologs.com/wp-content/uploads/2024/01/8-tips-to-be-a-jolly-person.jpg"
-            alt="pic"
-            className="h-16 w-16 object-cover rounded-full"
-          />
-          <p>Chat Name</p>
-        </div>
+        {userDetails && (
+          <div className="flex justify-start items-center gap-4">
+            <img
+              src={
+                "https://xsgames.co/randomusers/assets/avatars/male/" +
+                Math.round(Math.abs(userDetails.chat_id - 10000)) +
+                ".jpg"
+              }
+              alt="pic"
+              className="h-16 w-16 object-cover rounded-full"
+            />
+            <p>
+              {userDetails.sender_details.profile_data.first_name +
+                " " +
+                userDetails.sender_details.profile_data.last_name}
+            </p>
+          </div>
+        )}
         <div className="flex justify-end items-center gap-4">
           <i className="pi pi-search" />
           <i className="pi pi-ellipsis-v" />
@@ -57,7 +103,7 @@ const ChatWindow = ({ chatId }) => {
         className="h-[80vh] message-window bg-gray-200 p-5 flex flex-col gap-4 overflow-scroll"
         onScroll={(e) => {
           if (e.target.scrollTop === 0 && hasMore) {
-            fetchMessages(chatId, page + 1);
+            fetchMessages(selectedChatId, page + 1);
           }
         }}
       >

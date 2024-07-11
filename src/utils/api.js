@@ -488,6 +488,10 @@ export const getChats = async () => {
   return { chats };
 };
 
+export const getUserViaChatId = (chatId) => {
+  return chats.find((chat) => chat.chat_id === chatId);
+};
+
 export const getMessages = async (chatId, page) => {
   const pageSize = 10;
   const allMessages = messages[chatId] || [];
@@ -497,12 +501,12 @@ export const getMessages = async (chatId, page) => {
   return { messages: paginatedMessages, hasMore: end < allMessages.length };
 };
 
-export const sendMessage = async (chatId, message) => {
+export const sendMessage = async (chatId, message, type) => {
   const newMessage = {
     id: Date.now().toString(),
     content: message,
     created_at: new Date().toISOString(),
-    type: "sent",
+    type: type,
   };
   if (!messages[chatId]) messages[chatId] = [];
   messages[chatId].push(newMessage);

@@ -1,3 +1,8 @@
 @tailwind base;
+
+.p-tabview-selected > a {
+  background-color: rgb(215, 215, 215);
+}
+
 @tailwind components;
 @tailwind utilities;

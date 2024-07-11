@@ -3,7 +3,7 @@ import MessagePreview from "./MessagePreview";
 import { TabView, TabPanel } from "primereact/tabview";
 import { getChats, markChatAsRead } from "../utils/api";
 
-const MessagesSidebar = ({ onChatClick }) => {
+export default function MessagesSidebar({ setSelectedChatId, selectedChatId }) {
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
@@ -22,9 +22,11 @@ const MessagesSidebar = ({ onChatClick }) => {
 
   const handleChatClick = async (chat) => {
     await markChatAsRead(chat.chat_id);
-    onChatClick(chat.chat_id);
+    setSelectedChatId(chat.chat_id);
     fetchAllChats(); // Refresh chats to update unread count
   };
+
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className="w-1/3 h-[100vh] overflow-scroll">
@@ -36,35 +38,53 @@ const MessagesSidebar = ({ onChatClick }) => {
         </div>
       </div>
       <div className="px-5 flex justify-center items-center">
-        <input className="p-2 border w-full rounded" type="text" placeholder="Search..." />
+        <input
+          className="p-2 border w-full rounded"
+          type="text"
+          placeholder="Search..."
+        />
       </div>
-      <TabView className="px-5">
-        <TabPanel header="All">
+      <TabView
+        className="px-5 custom-tabview"
+        activeIndex={activeIndex}
+        onTabChange={(e) => setActiveIndex(e.index)}
+      >
+        <TabPanel header="All" key={0}>
           {chats?.map((chat) => (
-            <div key={chat?.chat_id} onClick={() => handleChatClick(chat)}>
+            <div
+              key={chat?.chat_id}
+              onClick={() => handleChatClick(chat)}
+              className={`${
+                selectedChatId === chat?.chat_id ? "bg-gray-100 " : ""
+              }`}
+            >
               <MessagePreview chat={chat} />
             </div>
           ))}
         </TabPanel>
-        <TabPanel header="Unread">
+        <TabPanel header="Unread" key={1}>
           {chats
             ?.filter((chat) => chat.unread > 0)
             .map((chat) => (
-              <div key={chat?.chat_id} onClick={() => handleChatClick(chat)}>
+              <div
+                key={chat?.chat_id}
+                onClick={() => handleChatClick(chat)}
+                className={`${
+                  selectedChatId === chat?.chat_id ? "bg-gray-100 " : ""
+                }`}
+              >
                 <MessagePreview chat={chat} />
               </div>
             ))}
         </TabPanel>
-        <TabPanel header="Bookmarked">
+        {/* <TabPanel header="Bookmarked">
           {chats?.map((chat) => (
             <div key={chat?.chat_id} onClick={() => handleChatClick(chat)}>
               <MessagePreview chat={chat} />
             </div>
           ))}
-        </TabPanel>
+        </TabPanel> */}
       </TabView>
     </div>
   );
-};
-
-export default MessagesSidebar;
+}

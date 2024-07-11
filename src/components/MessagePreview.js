@@ -4,16 +4,20 @@ const MessagePreview = ({ chat }) => {
     <>
       <div className="flex justify-between items-center py-2 my-2 cursor-pointer hover:bg-gray-100 transition-all">
         <div className="flex gap-4 items-center justify-start">
-          {/* <img
-            src="https://www.psychologs.com/wp-content/uploads/2024/01/8-tips-to-be-a-jolly-person.jpg"
-            alt="person"
-            className=" h-16 w-16 object-cover rounded-full"
-          /> */}
-          <div className="h-14 w-14 rounded-full bg-gray-200 flex justify-center items-center">
+          <img
+            className="rounded-full w-14 h-14"
+            alt="name"
+            src={
+              "https://xsgames.co/randomusers/assets/avatars/male/" +
+              Math.round(Math.abs(chat.chat_id - 10000)) +
+              ".jpg"
+            }
+          />
+          {/* <div className="h-14 w-14 rounded-full bg-gray-200 flex justify-center items-center">
             <p className="text-xl font-semibold">
               {chat?.sender_details?.profile_data?.first_name?.charAt(0)}
             </p>
-          </div>
+          </div> */}
           <div className="flex flex-col justify-start">
             <p>
               {chat?.sender_details?.profile_data?.first_name}{" "}

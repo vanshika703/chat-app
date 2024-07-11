@@ -2,7 +2,7 @@ const MessagePreview = ({ chat }) => {
   console.log("chat", chat);
   return (
     <>
-      <div className="flex justify-between items-center p-2 m-2 cursor-pointer hover:bg-gray-100 transition-all">
+      <div className="flex justify-between items-center py-2 my-2 cursor-pointer hover:bg-gray-100 transition-all">
         <div className="flex gap-4 items-center justify-start">
           {/* <img
             src="https://www.psychologs.com/wp-content/uploads/2024/01/8-tips-to-be-a-jolly-person.jpg"

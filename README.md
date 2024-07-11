@@ -10,7 +10,7 @@ This project is a chat application built using React. The application allows use
 - Filter chats to show all or only unread messages.
 
 
-##How to run :
+## How to run :
 Clone the repository:
 git clone https://github.com/vanshika703/chat-app.git
 

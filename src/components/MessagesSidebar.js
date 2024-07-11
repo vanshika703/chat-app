@@ -29,7 +29,7 @@ export default function MessagesSidebar({
       </div>
       <div className="px-5 flex justify-center items-center">
         <input
-          className="p-1 my-1 border w-full rounded"
+          className="p-2 my-1 w-full border rounded bg-white"
           type="text"
           placeholder="Search chats..."
         />

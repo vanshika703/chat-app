@@ -142,7 +142,7 @@ const ChatWindow = ({ selectedChatId, setChats, fetchAllChats, chats }) => {
             key={index}
           >
             <span
-              className={`p-2 rounded ${
+              className={`p-2 px-4 rounded-full ${
                 message.type === "sent" ? " bg-green-200 " : "bg-gray-300"
               }`}
             >

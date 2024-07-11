@@ -11,7 +11,7 @@ This project is a chat application built using React. The application allows use
 
 Clone the repository:
 
-git clone https://github.com/yourusername/chat-application.git
+git clone https://github.com/vanshika703/chat-app.git
 Navigate to the project directory:
 
 cd chat-application

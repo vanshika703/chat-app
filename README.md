@@ -9,6 +9,8 @@ This project is a chat application built using React. The application allows use
 - Automatically move chats with new messages to the top of the list.
 - Filter chats to show all or only unread messages.
 
+
+##How to run :
 Clone the repository:
 git clone https://github.com/vanshika703/chat-app.git
 

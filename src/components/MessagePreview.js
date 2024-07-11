@@ -1,8 +1,12 @@
 const MessagePreview = ({ chat, selectedChatId }) => {
-  console.log("chat", chat);
   return (
     <>
-      <div className="flex justify-between items-center py-2 my-2 cursor-pointer hover:bg-gray-100 transition-all">
+      <div
+        className={
+          (selectedChatId === chat?.chat_id ? " bg-gray-100 " : " ") +
+          " flex justify-between items-center py-2 my-2 cursor-pointer hover:bg-gray-100 transition-all "
+        }
+      >
         <div className="flex gap-4 items-center justify-start">
           <img
             className="rounded-full w-14 h-14"
@@ -24,13 +28,13 @@ const MessagePreview = ({ chat, selectedChatId }) => {
               {chat?.sender_details?.profile_data?.last_name}
             </p>
             <p className="text-sm">{chat?.last_message?.content}</p>
-            <p className="text-xs">{chat?.last_message?.created_at}</p>
+            {/* <p className="text-xs">{chat?.last_message?.created_at}</p> */}
           </div>
         </div>
         {selectedChatId !== chat?.chat_id && (
           <div className="flex flex-col justify-between items-end text-xs h-full">
             {chat?.unread !== 0 ? (
-              <p className="text-xs p-1 px-2 bg-green-200 rounded-full flex justify-center items-center w-5 h-5">
+              <p className="text-xs text-white px-1 bg-green-200 rounded-full flex justify-center items-center">
                 {chat?.unread}
               </p>
             ) : (

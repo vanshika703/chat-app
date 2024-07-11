@@ -19,11 +19,9 @@ function App() {
 
   // FUNCTION TO FETCH ALL CHATS, GETCHATS IS THE MOCK API CALL
   const fetchAllChats = async () => {
-    console.log("fetching");
     try {
       const data = await getChats();
       setChats(data?.chats);
-      console.log("data", data);
     } catch (err) {
       console.log(err);
     }

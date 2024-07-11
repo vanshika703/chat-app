@@ -527,6 +527,5 @@ export const markChatAsRead = async (chatId) => {
 export const markChatAsUnRead = async (chatId) => {
   const chat = chats.find((chat) => chat.chat_id === chatId);
   if (chat) chat.unread = chat.unread + 1;
-  console.log("chat unread: " + chat.unread);
   return chat;
 };

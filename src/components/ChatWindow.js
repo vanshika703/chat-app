@@ -27,7 +27,6 @@ const ChatWindow = ({ selectedChatId, setChats, fetchAllChats, chats }) => {
 
       const user = getUserViaChatId(selectedChatId);
       setUserDetails(user);
-      console.log("Received user", user);
     }
   }, [selectedChatId]);
 
@@ -95,7 +94,6 @@ const ChatWindow = ({ selectedChatId, setChats, fetchAllChats, chats }) => {
           return [...acc, chat];
         }
       }, []);
-      console.log("newChat", newChats, chats);
       setChats(newChats);
       scrollToBottom();
       if (c >= 2) clearInterval(interval);
@@ -114,7 +112,7 @@ const ChatWindow = ({ selectedChatId, setChats, fetchAllChats, chats }) => {
                 ".jpg"
               }
               alt="pic"
-              className="h-16 w-16 object-cover rounded-full"
+              className="h-14 w-14 object-cover rounded-full"
             />
             <p>
               {userDetails.sender_details.profile_data.first_name +
